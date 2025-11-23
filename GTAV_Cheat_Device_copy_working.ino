@@ -20,10 +20,10 @@
 // Menu configuration
 #define MENU_ITEMS 29
 #define MAX_DISPLAY_ITEMS 2
-#define DEBOUNCE_DELAY 50
+#define DEBOUNCE_DELAY 5
 #define SCROLL_DELAY_INITIAL 200
 #define SCROLL_DELAY_ACCELERATED 200
-#define TYPING_DELAY 15
+#define TYPING_DELAY 5
 
 // OLED display object
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
@@ -54,18 +54,18 @@ const CheatCode cheatCodes[MENU_ITEMS] = {
   {"DEADEYE", "DEADEYE", "Slow Motion Aim"},
   {"SNOWDAY", "SNOWDAY", "Snowy Weather"},
   {"MAKEITRAIN", "MAKEITRAIN", "Change Weather"},
-  {"BANDIT", "BANDIT", "Spawn Dune Buggy"},
-  {"COMET", "COMET", "Spawn Comet Car"},
-  {"ROCKET", "ROCKET", "Spawn Rapid GT"},
-  {"OFFROAD", "OFFROAD", "Spawn Sanchez"},
-  {"RAPIDGT", "RAPIDGT", "Spawn Rapid GT"},
-  {"VINEWOOD", "VINEWOOD", "Spawn Limo"},
-  {"TRASHED", "TRASHED", "Spawn Trashmaster"},
-  {"BARNSTORM", "BARNSTORM", "Spawn Duster"},
-  {"BUZZOFF", "BUZZOFF", "Spawn Buzzard"},
-  {"DEATHCAR", "DEATHCAR", "Spawn Ruiner 2000"},
-  {"BUBBLES", "BUBBLES", "Spawn Stunt Plane"},
-  {"EXTINCT", "EXTINCT", "Spawn Dodo Plane"}
+  {"BANDIT", "BANDIT", "Dune Buggy"},
+  {"COMET", "COMET", "Comet Car"},
+  {"ROCKET", "ROCKET", "Rapid GT"},
+  {"OFFROAD", "OFFROAD", "Sanchez"},
+  {"RAPIDGT", "RAPIDGT", "Rapid GT"},
+  {"VINEWOOD", "VINEWOOD", "Limo"},
+  {"TRASHED", "TRASHED", "Trashmaster"},
+  {"BARNSTORM", "BARNSTORM", "Duster"},
+  {"BUZZOFF", "BUZZOFF", "Buzzard"},
+  {"DEATHCAR", "DEATHCAR", "Ruiner 2000"},
+  {"BUBBLES", "BUBBLES", "Stunt Plane"},
+  {"EXTINCT", "EXTINCT", "Dodo Plane"}
 };
 
 // Menu variables
@@ -211,13 +211,15 @@ void updateDisplay() {
     int itemIndex = scrollOffset + i;
     if (itemIndex >= MENU_ITEMS) break;
     
-    display.setCursor(0, 16 + i * 18);
+    // CHANGED: Added line gap - increased vertical spacing from 16 to 20 pixels
+    display.setCursor(0, 16 + i * 24);
     
     if (itemIndex == currentSelection) {
       display.print("-> ");
-      display.setTextColor(SSD1306_BLACK, SSD1306_WHITE);
+      //display.setTextColor(SSD1306_BLACK, SSD1306_WHITE);
     } else {
-      display.print("   ");
+      
+      display.print(" ");
       display.setTextColor(SSD1306_WHITE);
     }
     
@@ -256,7 +258,7 @@ void executeCheat(int selection) {
   Keyboard.press('`'); // GTA V console key (tilde/backtick)
   delay(100);
   Keyboard.releaseAll();
-  delay(400);
+  delay(200);
   
   // Type the cheat code in UPPERCASE
   Keyboard.print(cheatCodes[selection].code);
@@ -266,10 +268,10 @@ void executeCheat(int selection) {
   Keyboard.press(KEY_RETURN);
   delay(100);
   Keyboard.releaseAll();
-  delay(300);
+  delay(200);
   
   showSuccessIndicator();
-  delay(1000);
+  delay(300);
   updateDisplay();
 }
 
